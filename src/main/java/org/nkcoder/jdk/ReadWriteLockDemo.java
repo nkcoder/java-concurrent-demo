@@ -9,15 +9,15 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class ReadWriteLockDemo {
 
-  private static ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-  private static Lock readLock = readWriteLock.readLock();
-  private static Lock writeLock = readWriteLock.writeLock();
+  private final ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+  private final Lock readLock = readWriteLock.readLock();
+  private final Lock writeLock = readWriteLock.writeLock();
   private int value = 0;
 
   /**
    * read.
    * 
-   * @return
+   * @return value
    */
   public int readValue() {
     try {
@@ -62,7 +62,7 @@ public class ReadWriteLockDemo {
    */
   public static void main(String[] args) throws InterruptedException {
     ReadWriteLockDemo readWriteLockDemo = new ReadWriteLockDemo();
-    Runnable readRunnable = () -> readWriteLockDemo.readValue();
+    Runnable readRunnable = readWriteLockDemo::readValue;
     Runnable writeRunnable = () -> readWriteLockDemo.setValue(10);
 
     ExecutorService executorService = Executors.newFixedThreadPool(20);
